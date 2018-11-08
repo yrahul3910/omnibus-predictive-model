@@ -31,4 +31,29 @@ v4 |v6,v9,v11,v13,v14,v17,v19,v24 (no const)|0.961|All
 v4 |v6,v9,v11,v13,v14,v17,v19,v25 (no const)|0.953|All, v25 has 0.033
 **v4** |**v6,v9,v11,v13,v14,v17,v19,v24,v25 (no const)**|**0.972**|**All**
 
+**Nov 08 2018**: Wrote a general function to do the above. It's definitely not perfect, but it seems to yield pretty decent results. Since v2 was the next predictor variable (it has high correlation with 9 other variables), I performed the same analysis as above on v2. The results are below.  
 
+
+
+| Expt. No. |   DV   |                     IVs                     | Adj. R^2  | Significant IVs               |
+| --------- | :----: | :-----------------------------------------: | :-------: | ----------------------------- |
+| 1         |   v2   |                     v4                      |   0.804   | All                           |
+| 2         |   v2   |                v4 (no const)                |   0.818   | All                           |
+| 3         |   v2   |                    v4,v6                    |   0.924   | All                           |
+| 4         |   v2   |              v4,v6 (no const)               |   0.93    | All                           |
+| 5         |   v2   |                  v4,v6,v9                   |   0.924   | v4,v6,v9                      |
+| 6         |   v2   |             v4,v6,v9 (no const)             |   0.93    | All                           |
+| 7         |   v2   |                v4,v6,v9,v10                 |   0.925   | All                           |
+| 8         |   v2   |           v4,v6,v9,v10 (no const)           |   0.931   | v4,v6,v10                     |
+| 9         |   v2   |              v4,v6,v9,v10,v14               |   0.933   | All                           |
+| 10        |   v2   |         v4,v6,v9,v10,v14 (no const)         |   0.939   | All                           |
+| 11        |   v2   |            v4,v6,v9,v10,v14,v16             |   0.981   | v6,v9,v10,v14,v16,v18         |
+| 12        |   v2   |       v4,v6,v9,v10,v14,v16 (no const)       |   0.983   | All                           |
+| 13        |   v2   |          v4,v6,v9,v10,v14,v16,v18           |   0.981   | v6,v9,v10,v14,v16,v18         |
+| 14        |   v2   |     v4,v6,v9,v10,v14,v16,v18 (no const)     |   0.983   | v4,v6,v9,v10,v14,v16          |
+| 15        |   v2   |        v4,v6,v9,v10,v14,v16,v18,v19         |   0.992   | All                           |
+| **16**    | **v2** | **v4,v6,v9,v10,v14,v16,v18,v19 (no const)** | **0.993** | **v4,v6,v10,v14,v16,v18,v19** |
+| 17        |   v2   |      v4,v6,v9,v10,v14,v16,v18,v19,v24       |   0.992   | All                           |
+| 18        |   v2   | v4,v6,v9,v10,v14,v16,v18,v19,v24 (no const) |   0.993   | v4,v6,v10,v14,v16,v18,v19,v24 |
+
+Next, seeing row 16 had the best results--highest adjusted R^2 and least number of significant IVs, I ran the OLS model on just these. All the IVs had p-value 0. I also plotted the residuals vs. fits plot for both v2 and v4. For v2, the Pearson R value was 0.44, and for v4, the Pearson R value was 0.41. Both the plots are in the notebook.
