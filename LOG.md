@@ -57,3 +57,7 @@ v4 |v6,v9,v11,v13,v14,v17,v19,v25 (no const)|0.953|All, v25 has 0.033
 | 18        |   v2   | v4,v6,v9,v10,v14,v16,v18,v19,v24 (no const) |   0.993   | v4,v6,v10,v14,v16,v18,v19,v24 |
 
 Next, seeing row 16 had the best results--highest adjusted R^2 and least number of significant IVs, I ran the OLS model on just these. All the IVs had p-value 0. I also plotted the residuals vs. fits plot for both v2 and v4. For v2, the Pearson R value was 0.44, and for v4, the Pearson R value was 0.41. Both the plots are in the notebook.
+
+**Nov 17 2018**: Explored DBSCAN and mean-shift algorithms for clustering points. With `eps` of 45, DBSCAN produced 3 clusters, and 60 individual clusters. Mean-shift gave 12 clusters, where 5 had only one point. The distribution of the number of points in both was very similar.  
+
+**Nov 19 2018**: Clustered points for the subset of the data, and did the analysis above with a little more detail, tracking every point in both clustering algorithms.
