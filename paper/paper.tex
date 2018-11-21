@@ -22,12 +22,12 @@
 }
 
 \section{Introduction}
-\underline{Give an introduction here}. 
+Scientometrics is the study of measuring science and research. Several measures are currently in use to measure the output of researchers, and each of these individually may not be an indicator of the quality and repute of a scholar's work. Comparing researchers by several metrics at once is cumbersome to do manually, and it would be incorrect to use a function of several metrics to compare how ``prolific" a researcher is. In this paper, we first identify linear relationships among the attributes. We assert that this is also useful in finding the ``most important" features. Later, we use two algorithms to cluster the records and compare the outputs of both algorithms. Finally, we use these results to identify prolific authors. 
 
 The rest of the paper is structured as follows. Section 2 describes the data and shows correlations between the attributes. Section 3 discusses the methods we used to analyse this data.
 
 \section{Data}
-The data contains 618 records of scholars with 25 attributes. There are no missing values, and eight of the attributes are integers. For ease of analysis, we have labeled the attributes as \textit{v1} through \textit{v25}. \underline{[maybe show what these are in a table]}.
+The data contains 618 records of scholars with 25 attributes. There are no missing values, and eight of the attributes are integers. For ease of analysis, we have labeled the attributes as \textit{v1} through \textit{v25}. A sample of the data is shown in the Supplementary Materials section at the end of this paper.
 
 \subsection{Preliminary Analysis}
 For a preliminary analysis of the relationships between the attributes, we sought to discover monotonic relationships. This was done by computing pairwise Spearman's rank correlation coefficient. This revealed that there were only positive monotonic relationships. 42.08\% of these coefficients were above 0.8, and 52\% were above 0.7.
@@ -49,7 +49,9 @@ Our first analysis investigated the precise relationships between the attributes
 
 Multiple regression analysis was performed as follows. For each attribute that the variable being analysed has a high correlation with, we ran an Ordinary Least Squares (OLS) regression model in two cases--with a constant term and without (that is, in a forward step-wise fashion). 
 
-In each case, for each variable, we check the p-value to ensure that all variables are statistically significant. Finally, we choose the model with the highest adjusted $R^2$ value, which avoids the pitfalls of ``kitchen sink regression". We also make sure that there are no significant autocorrelations, using the Durbin-Watson test. \cite{field2009discovering} suggests that a conservative range for the acceptable values for this test is between 1 and 3. In some cases, we chose to pick a model that has a slightly lesser adjusted $R^2$ value in favor of using lesser variables. This results in a model that still has a high predictive power, yet is simpler. In addition, we also check the residuals vs. fits plots and check that they are not very correlated.
+In each case, for each variable, we check the p-value to ensure that all variables are statistically significant. Finally, we choose the model with the highest adjusted $R^2$ value, which avoids the pitfalls of ``kitchen sink regression". We also make sure that there are no significant autocorrelations, using the Durbin-Watson test. \cite{field2009discovering} suggests that a conservative range for the acceptable values for this test is between 1 and 3. In some cases, we chose to pick a model that has a slightly lesser adjusted $R^2$ value in favor of using lesser variables. This results in a model that still has a high predictive power, yet is simpler. In addition, we also check the residuals vs. fits plots and check that they are not very correlated. 
+
+We note here that this analysis may be useful for identifying ``important" attributes in a dataset. If a model that predicts a dependent variable through the other attributes yields a high adjusted $R^2$ value, then we may safely remove this dependent variable, keeping only the statistically significant predictor variables from the regression analysis.
 
 The full regression results can be found in the Supplementary Materials section at the end of this paper. Here, we present a summary of the results of the regression analysis that was performed.
 
@@ -109,6 +111,115 @@ Perhaps more interesting than the above results was when we plotted the maximum 
 \hfill\break
 
 The sum of the squared residuals for this fit was 0.01456.
+
+\subsection{Cluster Analysis}
+We next sought to cluster the points, as a first step towards identifying ``prolific" authors. Because finding the number of clusters in such high dimensional data is difficult, we chose to use two different algorithms--DBSCAN (Density-Based Spatial Clustering of Applications with Noise)\cite{ester1996density} and mean-shift clustering \cite{comaniciu2002mean}. We picked two subsets of the data to perform this analysis on--the first was the set of variables that were highly correlated with \textit{v4} (denote this subset as $S_1$)--we chose these because it had an especially high number of correlated variables--and the second was the subset discussed in the previous subsection (which we shall denote as $S_2$.
+
+Because DBSCAN requires an \textit{eps} parameter, we chose to find a reasonable guess. We did this by setting a threshold that no more than roughly 10\% of the points (we chose 60 points) should be in individual custers. We started with an initial \textit{eps} guess of 0.5 and made increments of 0.1 till this condition was satisfied.
+
+For $S_1$, the value of \textit{eps} we arrived at was 45. Apart from 60 individual clusters, the algorithm identified three clusters of points. The results of this are summarized in Table 1. \\
+
+\begin{tabular}{|c|c|}
+\hline 
+\textbf{Cluster} & \textbf{Number of points} \\ 
+\hline 
+-1 & 60 \\ 
+\hline 
+0 & 532 \\ 
+\hline 
+1 & 20 \\ 
+\hline 
+2 & 6 \\ 
+\hline 
+\end{tabular}
+\begingroup
+\captionof{table}{DBSCAN clustering results on $S_1$}
+\endgroup
+\hfill\break
+
+The cluster -1 represents individual clusters. The rest of the clusters were arbitrarily numbered from zero. Next, we ran mean-shift clustering, which automatically finds clusters by estimating a \textit{bandwidth} parameter. Mean-Shift clustering identified 12 clusters, out of which five were individual clusters. We summarize these results in Table 2.\\
+
+\begin{tabular}{|c|c|}
+\hline 
+\textbf{Cluster} & \textbf{Number of points} \\ 
+\hline 
+-1 & 5 \\ 
+\hline 
+0 & 509 \\ 
+\hline 
+1 & 72 \\ 
+\hline 
+2 & 19 \\ 
+\hline 
+3 & 4 \\ 
+\hline 
+4 & 4 \\ 
+\hline 
+5 & 3 \\ 
+\hline 
+6 & 2 \\ 
+\hline 
+\end{tabular}
+\begingroup
+\captionof{table}{Mean-Shift clustering results for $S_1$}
+\endgroup
+\hfill\break
+
+We then checked whether the points in similar-sized clusters in each algorithm were the same. We briefly do this analysis for $S_1$, but conduct a more thorough investigation for $S_2$.
+
+We first looked at cluster 0 of both algorithms. Of these, 507 points were common, indicating that the majority of the dataset was clustered into the same cluster by both algorithms. Interestingly, however, this seems to be the only major commonality between the outputs of these algorithms. For example, cluster 1 of DBSCAN and cluster 2 of Mean-Shift, which had a very similar number of points, had no common points at all. Finally, 21 of the points that were marked as individual clusters by DBSCAN were put into cluster 1 by Mean-Shift.
+
+Next, we performed the above analysis for $S_2$. The value of \textit{eps} we arrived at was 18.6, and DBSCAN identified three clusters apart from sixty individual clusters. A summary is provided in Table 3, again, with cluster -1 meaning individual clusters.\\
+
+\begin{tabular}{|c|c|}
+\hline 
+\textbf{Cluster} & \textbf{Number of points} \\ 
+\hline 
+-1 & 60 \\ 
+\hline 
+0 & 541 \\ 
+\hline 
+1 & 3 \\ 
+\hline 
+2 & 14 \\ 
+\hline 
+\end{tabular} 
+\begingroup
+\captionof{table}{DBSCAN clustering results for $S_2$}
+\endgroup
+\hfill\break
+
+Table 4 summarizes the results of mean-shift clustering, which identified seven ``real" clusters and eight individual clusters.\\
+
+\begin{tabular}{|c|c|}
+\hline 
+\textbf{Cluster} & \textbf{Number of points} \\ 
+\hline 
+-1 & 8 \\ 
+\hline 
+0 & 504 \\ 
+\hline 
+1 & 82 \\ 
+\hline 
+2 & 15 \\ 
+\hline 
+3 & 3 \\ 
+\hline 
+4 & 2 \\ 
+\hline 
+5 & 2 \\ 
+\hline 
+6 & 2 \\ 
+\hline 
+\end{tabular} 
+\begingroup
+\captionof{table}{Mean-Shift clustering results for $S_2$}
+\endgroup
+\hfill\break
+
+From these two tables, we followed through to track each point in both clusters. The full results of this are given in the Supplementary Materials section, but a summary is as follows. DBSCAN marked 60 points as individual clusters, but this was due to our 10\% threshold. On the other hand, mean-shift only identified eight individual clusters. However, mean-shift identified four other clusters that had three points each or less, and all of these were marked as individual clusters by DBSCAN. More surprisingly, a cluster marked by mean-shift as having fifteen points was identified by DBSCAN as fifteen individual clusters. The rest of the 28 individual clusters identified by DBSCAN were a part of mean-shift's second-largest cluster of 82 points. The analysis so far may suggest that we should lower the threshold for DBSCAN, which would increase \textit{eps} (because if fewer points have to be identified as individual clusters, the distance that the algorithm is willing to consider must increase). However, looking at the bigger clusters weakens this position. Mean-shift's largest cluster of 504 points was a proper subset of DBSCAN's largest cluster. A large part of mean-shift's second-largest cluster, 37 out of 82 points, was also a part of DBSCAN's single largest cluster. This seems to suggest that we should reduce \textit{eps} to make the outputs of both algorithms more similar.
+
+While the two conclusions drawn above may seem contradictory, they are two separate observations. Increasing \textit{eps} would mean DBSCAN would find less clusters as single points. Decreasing \textit{eps} would certainly increase the number of individual clusters, which we certainly do not want, but this would shift some points in the larger clusters around, which may be desirable.
 
 \bibliographystyle{ieeetr}
 \bibliography{citations}

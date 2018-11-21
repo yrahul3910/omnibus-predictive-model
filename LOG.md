@@ -61,3 +61,5 @@ Next, seeing row 16 had the best results--highest adjusted R^2 and least number 
 **Nov 17 2018**: Explored DBSCAN and mean-shift algorithms for clustering points. With `eps` of 45, DBSCAN produced 3 clusters, and 60 individual clusters. Mean-shift gave 12 clusters, where 5 had only one point. The distribution of the number of points in both was very similar.  
 
 **Nov 19 2018**: Clustered points for the subset of the data, and did the analysis above with a little more detail, tracking every point in both clustering algorithms.
+
+**Nov 20 2018**: Started writing the paper. Completed half of the Method section. Continued this on Nov 21 2018.
