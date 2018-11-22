@@ -27,7 +27,7 @@ Scientometrics is the study of measuring science and research. Several measures 
 The rest of the paper is structured as follows. Section 2 describes the data and shows correlations between the attributes. Section 3 discusses the methods we used to analyse this data.
 
 \section{Data}
-The data contains 618 records of scholars with 25 attributes. There are no missing values, and eight of the attributes are integers. For ease of analysis, we have labeled the attributes as \textit{v1} through \textit{v25}. A sample of the data is shown in the Supplementary Materials section at the end of this paper.
+The data contains 618 records of scholars with 25 attributes. There are no missing values, and eight of the attributes are integers. For ease of analysis, we have labeled the attributes as \textit{v1} through \textit{v25}. A table explaining what each of these variables are is given in Table 1 of the Supplementary Materials section at the end of this paper.
 
 \subsection{Preliminary Analysis}
 For a preliminary analysis of the relationships between the attributes, we sought to discover monotonic relationships. This was done by computing pairwise Spearman's rank correlation coefficient. This revealed that there were only positive monotonic relationships. 42.08\% of these coefficients were above 0.8, and 52\% were above 0.7.
@@ -83,7 +83,7 @@ It should be noted that in all of the regression results of the above variables,
 \subsubsection{Analysis on subset of the data}
 Our next step of analysis was to pick a subset of the variables, and redo the same analysis discussed above on this subset. Once again, it turns out that for all the regression equations obtained, the constant was not statistically significant.
 
-The variables we chose were \textit{v9} through \textit{v21} and \textit{v24}. \underline{maybe explain why these}. Again, we created a matrix of Pearson R correlations, and picked out those that were higher than 0.8. Figure 4 shows this result. \\
+The variables we chose were \textit{v9} through \textit{v21} and \textit{v24}. Again, we created a matrix of Pearson R correlations, and picked out those that were higher than 0.8. Figure 4 shows this result. \\
 
 \includegraphics[scale=0.6]{fig4.png}
 \begingroup
@@ -99,7 +99,7 @@ While predicting \textit{v10}, dropping \textit{v19} resulted in no loss of adju
 
 We only looked at two other variables, because the adjusted $R^2$ for the others was below 0.95. For \textit{v11}, dropping \textit{v17} and \textit{v18} resulted in a 0.2\% drop in adjusted $R^2$, and we were able to use only four variables to get an adjusted $R^2$ of 0.971 and a Durbin-Watson of 2.081. Finally, for \textit{v13}, all variables were statistically significant, and we discarded \textit{v19} with no loss of adjusted $R^2$.
 
-Perhaps more interesting than the above results was when we plotted the maximum adjusted $R^2$ (without discarding any variables) against the number of predictor variables used (on this subset of the data). Figure 5 shows this result, where a logarithm function fits quite well to the data. The equation obtained was
+Perhaps more interesting than the above results was when we plotted the maximum adjusted $R^2$ (without discarding any variables) against the number of predictor variables used (on this subset of the data). Figure 5 shows this result, where a logarithm function fits quite well to the data. This meets our intuition of ``diminishing returns" as we increase the number of predictor variables. The equation obtained was
 \begin{equation}
 	\text{Adj. } R^2 = 0.125465 \log n + 0.746654
 \end{equation}
@@ -113,7 +113,7 @@ Perhaps more interesting than the above results was when we plotted the maximum 
 The sum of the squared residuals for this fit was 0.01456.
 
 \subsection{Cluster Analysis}
-We next sought to cluster the points, as a first step towards identifying ``prolific" authors. Because finding the number of clusters in such high dimensional data is difficult, we chose to use two different algorithms--DBSCAN (Density-Based Spatial Clustering of Applications with Noise)\cite{ester1996density} and mean-shift clustering \cite{comaniciu2002mean}. We picked two subsets of the data to perform this analysis on--the first was the set of variables that were highly correlated with \textit{v4} (denote this subset as $S_1$)--we chose these because it had an especially high number of correlated variables--and the second was the subset discussed in the previous subsection (which we shall denote as $S_2$.
+We next sought to cluster the points, as a first step towards identifying ``prolific" authors. Because finding the number of clusters in such high dimensional data is difficult, we chose to use two different algorithms--DBSCAN (Density-Based Spatial Clustering of Applications with Noise)\cite{ester1996density} and mean-shift clustering \cite{comaniciu2002mean} from Python's sklearn package \cite{scikit-learn}. We picked two subsets of the data to perform this analysis on--the first was the set of variables that were highly correlated with \textit{v4} (denote this subset as $S_1$)--we chose these because it had an especially high number of correlated variables--and the second was the subset discussed in the previous subsection (which we shall denote as $S_2$.
 
 Because DBSCAN requires an \textit{eps} parameter, we chose to find a reasonable guess. We did this by setting a threshold that no more than roughly 10\% of the points (we chose 60 points) should be in individual custers. We started with an initial \textit{eps} guess of 0.5 and made increments of 0.1 till this condition was satisfied.
 
@@ -220,6 +220,33 @@ Table 4 summarizes the results of mean-shift clustering, which identified seven 
 From these two tables, we followed through to track each point in both clusters. The full results of this are given in the Supplementary Materials section, but a summary is as follows. DBSCAN marked 60 points as individual clusters, but this was due to our 10\% threshold. On the other hand, mean-shift only identified eight individual clusters. However, mean-shift identified four other clusters that had three points each or less, and all of these were marked as individual clusters by DBSCAN. More surprisingly, a cluster marked by mean-shift as having fifteen points was identified by DBSCAN as fifteen individual clusters. The rest of the 28 individual clusters identified by DBSCAN were a part of mean-shift's second-largest cluster of 82 points. The analysis so far may suggest that we should lower the threshold for DBSCAN, which would increase \textit{eps} (because if fewer points have to be identified as individual clusters, the distance that the algorithm is willing to consider must increase). However, looking at the bigger clusters weakens this position. Mean-shift's largest cluster of 504 points was a proper subset of DBSCAN's largest cluster. A large part of mean-shift's second-largest cluster, 37 out of 82 points, was also a part of DBSCAN's single largest cluster. This seems to suggest that we should reduce \textit{eps} to make the outputs of both algorithms more similar.
 
 While the two conclusions drawn above may seem contradictory, they are two separate observations. Increasing \textit{eps} would mean DBSCAN would find less clusters as single points. Decreasing \textit{eps} would certainly increase the number of individual clusters, which we certainly do not want, but this would shift some points in the larger clusters around, which may be desirable.
+
+\subsection{Identifying Prolific Authors}
+Finally, we proceed to test our hypothesis--are the researchers in the individual clusters more ``prolific" than the others? For this, we used the results of the DBSCAN clustering because they were more succinct. We used the Welch's t-test \cite{welch1947generalization}, which does not assume equal variance between the two samples, and computed the p-values for all pairs of clusters (see Table 3 for the list of clusters) at 5\% and 10\% level of significance. Table 5 shows the results of this, where $C_1$ and $C_2$ are the cluster numbers.
+
+Clearly, looking at the first and third rows, there is a statistically significant difference between the means of the individual clusters and the first two largest clusters. In the third row, the 13/14 variables were statistically significant at 95\% confidence level, the insignificant one being \textit{v24} (star count). We also looked at the ``goodness" of the clustering using the Silhouette score \cite{rousseeuw1987silhouettes}, which was 0.571. \cite{kaufman2009finding} notes that this value means that ``a reasonable structure has been found".\\
+
+\begin{tabular}{|c|c|c|c|}
+\hline 
+$C_1$ & $C_2$ & \textbf{95\% significant} & \textbf{90\% significant} \\ 
+\hline 
+-1 & 0 & 1.0 & 1.0 \\ 
+\hline 
+-1 & 1 & 0.857 & 0.857 \\ 
+\hline 
+-1 & 2 & 0.928 & 1.0 \\ 
+\hline 
+0 & 1 & 0.786 & 0.857 \\ 
+\hline 
+0 & 2 & 1.0 & 1.0 \\ 
+\hline 
+1 & 2 & 0.643 & 0.786 \\ 
+\hline 
+\end{tabular} 
+\begingroup
+\captionof{table}{Percentage of significant Welch's test p-values at 95\% and 90\% confidence levels}
+\endgroup
+\hfill\break
 
 \bibliographystyle{ieeetr}
 \bibliography{citations}
