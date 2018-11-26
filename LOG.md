@@ -63,3 +63,5 @@ Next, seeing row 16 had the best results--highest adjusted R^2 and least number 
 **Nov 19 2018**: Clustered points for the subset of the data, and did the analysis above with a little more detail, tracking every point in both clustering algorithms.
 
 **Nov 20 2018**: Started writing the paper. Completed half of the Method section. Continued this on Nov 21 2018.
+
+**Nov 26 2018**: Checked whether v9-v21 and v24 have the same distributions using the KS test. All p-values were below 0.05, so none of these have the same distribution. Also ran clustering algorithms on z-standardized and min-max scaled data. DBSCAN produced pretty bad results (though this was rather predictable), but MeanShift produced interesting results.
