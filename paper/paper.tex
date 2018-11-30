@@ -117,6 +117,8 @@ We next sought to cluster the points, as a first step towards identifying ``prol
 
 Because DBSCAN requires an \textit{eps} parameter, we chose to find a reasonable guess. We did this by setting a threshold that no more than roughly 10\% of the points (we chose 60 points) should be in individual custers. We started with an initial \textit{eps} guess of 0.5 and made increments of 0.1 till this condition was satisfied.
 
+We did not scale the features before clustering, because the distributions of all the features were different (running a Kolgomorov-Smirnov test on every pair of features gave p-values < 0.05). To prove that feature scaling is an incorrect step empirically, we performed both z-standardization and feature scaling to [0, 100]. In both cases, we found the value of \textit{eps} in the same way discussed above, but starting from 0.001 and going in increments of 0.001. In both cases, DBSCAN returned 60 individual clusters, and one other cluster containing all the points.
+
 For $S_1$, the value of \textit{eps} we arrived at was 45. Apart from 60 individual clusters, the algorithm identified three clusters of points. The results of this are summarized in Table 1. \\
 
 \begin{tabular}{|c|c|}
