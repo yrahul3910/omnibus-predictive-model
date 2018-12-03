@@ -287,8 +287,16 @@ Finally(!), we show the same set of figures for \textit{v13}.\\
 \section{Cluster Analysis}
 We now present the full description of where each point is in each clustering algorithm. The explanation in the paper supplements this well enough to clearly understand the segregation of points by both algorithms.
 
+\subsection{PCA}
+We performed a PCA before using DBSCAN. In all cases, we used the same method discussed in the paper to compute the value of \textit{eps}. We did this analysis for one through twelve dimensions. For number of dimensions greater than six, the performance stagnates at 0.571. We argue however, that the new dimensions obtained by PCA are less interpretable than simply using the original features, and the maximum difference between the performance of DBSCAN using our hand-picked features (0.571) and using PCA (0.644, n=2) was only 0.073. Figure 17 shows the results of using PCA to various numbers of dimensions.
+
+\includegraphics[scale=0.7]{pca.png}
+\begingroup
+\captionof{figure}{Results of using PCA and then clustering with DBSCAN}
+\endgroup
+
 \subsection{Analysis on $S_1$}
-Figure 17 shows the analysis for $S_1$. The Silhouette score for DBSCAN here was 0.635.
+Figure 18 shows the analysis for $S_1$. The Silhouette score for DBSCAN here was 0.635.
 
 We make the following observations. The largest clusters for both the algorithms are very similar \textbf{(row 9)}. The two points in the MS cluster that were not in DBSCAN's largest cluster were in its second largest cluster \textbf{(row 2)}. All the clusters of the mean-shift algorithm that were of size 4 or less were marked as individual clusters by DBSCAN \textbf{(rows 5-8 and row 1)}. More surprisingly, the cluster of 19 points identified by mean-shift was marked as 19 individual clusters by DBSCAN \textbf{(row 4)}. Finally, a considerable part of mean-shift's second-largest cluster was also identified as individual points by DBSCAN \textbf{(row 3)}.
 
@@ -298,7 +306,7 @@ We make the following observations. The largest clusters for both the algorithms
 \endgroup
 
 \subsection{Analysis on $S_2$}
-Figure 18 shows the analysis for $S_2$. As noted in the paper, the Silhouette score for DBSCAN for this subset was 0.571. \\
+Figure 19 shows the analysis for $S_2$. As noted in the paper, the Silhouette score for DBSCAN for this subset was 0.571. \\
 
 \includegraphics[scale=0.65]{clustering.png}
 \begingroup
