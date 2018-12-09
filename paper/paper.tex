@@ -24,7 +24,9 @@
 	}
 	
 	\section{Introduction}
-	Scientometrics is the study of measuring science and research. Several measures are currently in use to measure the output of researchers, and each of these individually may not be an indicator of the quality and repute of a scholar's work. Comparing researchers by several metrics at once is cumbersome to do manually, and it would be incorrect to use a function of several metrics to compare how ``prolific" a researcher is. In this paper, we first identify linear relationships among the attributes. We assert that this is also useful in finding the ``most important" features. Later, we use two algorithms to cluster the records and compare the outputs of both algorithms. Finally, we use these results to identify prolific authors. 
+	Scientometrics is the study of measuring science and research. Several measures are currently in use to measure the output of researchers, and each of these individually may not be an indicator of the quality and repute of a scholar's work. Comparing researchers by several metrics at once is cumbersome to do manually, and it would be incorrect to use a function of several metrics to compare how ``prolific" a researcher is. In this paper, we first identify linear relationships among the attributes. We assert that this is also useful in finding the ``most important" features. Later, we use two algorithms to cluster the records and compare the outputs of both algorithms. Finally, we use these results to identify prolific authors.
+	
+	Our contributions are two-fold. First, we outline a systematic method to identify prolific authors based solely on data using two algorithms, and compare their results. Second, we illustrate an approach to choose an appropriate value of eps in DBSCAN by setting a threshold on the number of individual clusters formed.
 	
 	The rest of the paper is structured as follows. Section 2 describes the data and shows correlations between the attributes. Section 3 discusses the methods we used to analyse this data.
 	
@@ -117,7 +119,7 @@
 	\subsection{Cluster Analysis}
 	We next sought to cluster the points, as a first step towards identifying ``prolific" authors. Because finding the number of clusters in such high dimensional data is difficult, we chose to use two different algorithms--DBSCAN (Density-Based Spatial Clustering of Applications with Noise)\cite{ester1996density} and mean-shift clustering \cite{comaniciu2002mean} from Python's sklearn package \cite{scikit-learn}. We picked two subsets of the data to perform this analysis on--the first was the set of variables that were highly correlated with \textit{v4} (denote this subset as $S_1$)--we chose these because it had an especially high number of correlated variables--and the second was the subset discussed in the previous subsection (which we shall denote as $S_2$. We also performed the clustering analysis with DBSCAN using PCA instead of manually picking features. The results of that are discussed in the Supplementary Materials.
 	
-	Because DBSCAN requires an \textit{eps} parameter, we chose to find a reasonable guess. We did this by setting a threshold that no more than roughly 10\% of the points (we chose 60 points) should be in individual custers. We started with an initial \textit{eps} guess of 0.5 and made increments of 0.1 till this condition was satisfied.
+	Because DBSCAN requires an \textit{eps} parameter, we chose to find a reasonable guess. We did this by setting a threshold that no more than roughly 10\% of the points (we chose 60 points) should be in individual custers. We started with an initial \textit{eps} guess of 0.5 and made increments of 0.1 till this condition was satisfied. For all experiments, the minimum samples parameter was set to 5.
 	
 	We did not scale the features before clustering, because the distributions of all the features were different (running a Kolgomorov-Smirnov test on every pair of features gave p-values < 0.05). To prove that feature scaling is an incorrect step empirically, we performed both z-standardization and feature scaling to [0, 100]. In both cases, we found the value of \textit{eps} in the same way discussed above, but starting from 0.001 and going in increments of 0.001. In both cases, DBSCAN returned 60 individual clusters, and one other cluster containing all the points.
 	
@@ -232,7 +234,7 @@
 	
 	\begin{tabular}{|c|c|c|c|}
 		\hline 
-		$C_1$ & $C_2$ & \textbf{95\% significant} & \textbf{90\% significant} \\ 
+		$C_1$ & $C_2$ & \textbf{95\%} & \textbf{90\%} \\ 
 		\hline 
 		-1 & 0 & 1.0 & 1.0 \\ 
 		\hline 
@@ -248,9 +250,14 @@
 		\hline 
 	\end{tabular} 
 	\begingroup
-	\captionof{table}{Percentage of significant Welch's test p-values at 95\% and 90\% confidence levels}
+	\captionof{table}{Fraction of significant Welch's test p-values at 95\% and 90\% confidence levels}
 	\endgroup
 	\hfill\break
+	
+	\section{Conclusion}
+	We investigated the use of DBSCAN to identify prolific authors in the context of a scientometric dataset.
+	
+	Our experiments demonstrate the capability of our methods.  For the task of identifying prolific authors, both clustering algorithms produced similar results. For finding a suitable value of eps, to the best of our knowledge, we are the first to attempt to automate the process of searching by setting a threshold on the number of individual clusters. Our method of choosing eps produced clusters similar to those produced autonomously by Mean-Shift clustering, which lends credence to the efficacy of our approach.
 	
 	\bibliographystyle{ieeetr}
 	\bibliography{citations}
