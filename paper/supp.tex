@@ -287,8 +287,76 @@ Finally(!), we show the same set of figures for \textit{v13}.\\
 \section{Cluster Analysis}
 We now present the full description of where each point is in each clustering algorithm. The explanation in the paper supplements this well enough to clearly understand the segregation of points by both algorithms.
 
+\subsection{Agglomerative Clustering}
+The scree plot for the variables is shown in Figure 17.
+
+\includegraphics[scale=0.6]{scree.png}
+\begingroup
+\captionof{figure}{Scree Plot}
+\endgroup
+\hfill\break
+
+The factor loadings after performing a PCA with OBLIMIN rotation are shown in Table 4.
+
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Variable} & \textbf{F1} & \textbf{F2} & \textbf{F3}\\
+\hline
+Papers & \textbf{0.898} & -0.444 & -0.020\\
+\hline
+Citations & \textbf{0.919} & 0.023 & -0.157\\
+\hline
+Cites per Year & \textbf{0.834} & 0.287 & -0.076\\
+\hline
+Cites per Paper & 0.397 & \textbf{0.671} & 0.170\\
+\hline
+Cites per Author & \textbf{0.923} & 0.100 & -0.157\\
+\hline
+Papers per Author & \textbf{0.887} & -0.450 & -0.023\\
+\hline
+h-index & \textbf{0.964} & -0.079 & 0.111\\
+\hline
+g-index & \textbf{0.936} & 0.016 & 0.120\\
+\hline
+hc-index & \textbf{0.859} & 0.019 & 0.215\\
+\hline
+hI-index & \textbf{0.850} & 0.002 & 0.126\\
+\hline
+hI-norm & \textbf{0.924} & 0.001 & 0.148\\
+\hline
+AWCR & \textbf{0.903} & 0.062 & -0.090\\
+\hline
+AW-index & \textbf{0.885} & 0.067 & 0.169\\
+\hline
+AWCRpA & \textbf{0.921} & 0.145 & -0.094\\
+\hline
+e-index & \textbf{0.837} & 0.208 & 0.142\\
+\hline
+hm-index & \textbf{0.960} & -0.108 & 0.069\\
+\hline
+CitesAuthorYear & \textbf{0.785} & 0.397 & -0.089\\
+\hline
+CitesAuthorArticle & 0.331 & \textbf{0.734s} & 0.105\\
+\hline
+CitesAuthorYearArticle & -0.032 & \textbf{0.832} & 0.169\\
+\hline
+hI-annual & \textbf{0.455} & 0.322 & 0.362\\
+\hline
+h-coverage & -0.051 & 0.075 & \textbf{0.943}\\
+\hline
+g-coverage & 0.029 & -0.003 & \textbf{0.964}\\
+\hline
+Star count & \textbf{0.781} & 0.286 & -0.140\\
+\hline
+Adjusted star count & \textbf{0.722} & 0.425 & -0.146\\
+\hline
+\end{tabular}
+\begingroup
+\captionof{table}{Factor loadings after PCA. The factors that the variables are loaded on to are shown in bold for each variable.}
+\endgroup
+
 \subsection{PCA}
-We performed a PCA before using DBSCAN. In all cases, we used the same method discussed in the paper to compute the value of \textit{eps}. We did this analysis for one through twelve dimensions. For number of dimensions greater than six, the performance stagnates at 0.571. We argue however, that the new dimensions obtained by PCA are less interpretable than simply using the original features, and the maximum difference between the performance of DBSCAN using our hand-picked features (0.571) and using PCA (0.644, n=2) was only 0.073. Figure 17 shows the results of using PCA to various numbers of dimensions.
+We performed a PCA before using DBSCAN. In all cases, we used the same method discussed in the paper to compute the value of \textit{eps}. We did this analysis for one through twelve dimensions. For number of dimensions greater than six, the performance stagnates at 0.571. We argue however, that the new dimensions obtained by PCA are less interpretable than simply using the original features, and the maximum difference between the performance of DBSCAN using our hand-picked features (0.571) and using PCA (0.644, n=2) was only 0.073. Figure 18 shows the results of using PCA to various numbers of dimensions.
 
 \includegraphics[scale=0.7]{pca.png}
 \begingroup
@@ -296,7 +364,7 @@ We performed a PCA before using DBSCAN. In all cases, we used the same method di
 \endgroup
 
 \subsection{Analysis on $S_1$}
-Figure 18 shows the analysis for $S_1$. The Silhouette score for DBSCAN here was 0.635.
+Figure 19 shows the analysis for $S_1$. The Silhouette score for DBSCAN here was 0.635.
 
 We make the following observations. The largest clusters for both the algorithms are very similar \textbf{(row 9)}. The two points in the MS cluster that were not in DBSCAN's largest cluster were in its second largest cluster \textbf{(row 2)}. All the clusters of the mean-shift algorithm that were of size 4 or less were marked as individual clusters by DBSCAN \textbf{(rows 5-8 and row 1)}. More surprisingly, the cluster of 19 points identified by mean-shift was marked as 19 individual clusters by DBSCAN \textbf{(row 4)}. Finally, a considerable part of mean-shift's second-largest cluster was also identified as individual points by DBSCAN \textbf{(row 3)}.
 
@@ -306,7 +374,7 @@ We make the following observations. The largest clusters for both the algorithms
 \endgroup
 
 \subsection{Analysis on $S_2$}
-Figure 19 shows the analysis for $S_2$. As noted in the paper, the Silhouette score for DBSCAN for this subset was 0.571. \\
+Figure 20 shows the analysis for $S_2$. As noted in the paper, the Silhouette score for DBSCAN for this subset was 0.571. \\
 
 \includegraphics[scale=0.65]{clustering.png}
 \begingroup

@@ -117,7 +117,21 @@
 	The sum of the squared residuals for this fit was 0.01456.
 	
 	\subsection{Cluster Analysis}
-	We next sought to cluster the points, as a first step towards identifying ``prolific" authors. Because finding the number of clusters in such high dimensional data is difficult, we chose to use two different algorithms--DBSCAN (Density-Based Spatial Clustering of Applications with Noise)\cite{ester1996density} and mean-shift clustering \cite{comaniciu2002mean} from Python's sklearn package \cite{scikit-learn}. We picked two subsets of the data to perform this analysis on--the first was the set of variables that were highly correlated with \textit{v4} (denote this subset as $S_1$)--we chose these because it had an especially high number of correlated variables--and the second was the subset discussed in the previous subsection (which we shall denote as $S_2$. We also performed the clustering analysis with DBSCAN using PCA instead of manually picking features. The results of that are discussed in the Supplementary Materials.
+	Clustering provides an intuitive mechanism for identifying ``prolific" authors. We performed two kinds of clustering--hierarchical and density-based, which are detailed below.
+	
+	\subsubsection{Hierarchical Cluster Analysis}
+	We first ran a Principal Components Analysis (PCA). Due to the highly correlated nature of the variables, we performed an oblique rotation (OBLIMIN). We conducted this analysis on a revised dataset that contained only performance indicators, and removed two unrelated features: \textit{Years} and \textit{Authors per Paper}. This resulted in three dimensions. A scree plot and a table showing the loadings of the original variables on the principal factors (after rotation) are given in the Supplementary Materials.
+	
+	We weighted each factor by the fraction of variables loaded on them; for example, the factor $D_1$ has a weight $\frac{19}{24}$ because of the 24 variables, the loading of 19 of the variables was maximum on $D_1$. Finally, we performed agglomerative hierarchical clustering on the projections of the variables, using the weights calculated. Figure 6 shows the dendogram obtained.
+	
+	\includegraphics[scale=0.35]{dendogram.png}
+	\begingroup
+	\captionof{figure}{Agglomerative hierarchical clustering dendogram}
+	\endgroup
+	\hfill\break
+	
+	\subsubsection{Density-Based Cluster Analysis}
+	Because finding the number of clusters in such high dimensional data is difficult, we chose to use two different algorithms--DBSCAN (Density-Based Spatial Clustering of Applications with Noise)\cite{ester1996density} and mean-shift clustering \cite{comaniciu2002mean} from Python's sklearn package \cite{scikit-learn}. We picked two subsets of the data to perform this analysis on--the first was the set of variables that were highly correlated with \textit{v4} (denote this subset as $S_1$)--we chose these because it had an especially high number of correlated variables--and the second was the subset discussed in the previous subsection (which we shall denote as $S_2$. We also performed the clustering analysis with DBSCAN using PCA instead of manually picking features. The results of that are discussed in the Supplementary Materials.
 	
 	Because DBSCAN requires an \textit{eps} parameter, we chose to find a reasonable guess. We did this by setting a threshold that no more than roughly 10\% of the points (we chose 60 points) should be in individual custers. We started with an initial \textit{eps} guess of 0.5 and made increments of 0.1 till this condition was satisfied. For all experiments, the minimum samples parameter was set to 5.
 	
