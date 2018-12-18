@@ -1,4 +1,4 @@
-\documentclass[12pt,a4paper,twocolumn]{article}
+\documentclass[smallextended]{svjour3} 
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -7,21 +7,33 @@
 \usepackage{authblk}
 \usepackage[font=small,labelfont=bf]{caption}
 
+\begin{document}
 \title{``How Prolific Are You?": A Scientometric Analysis of Researchers}
 
-\author[1]{Rahul Yedida}
-\author[2]{Adel Aladwani}
-\author[1]{Snehanshu Saha}
-\affil[1]{Department of Computer Science \& Engineering, PES University}
-\affil[2]{Department of Information Systems, Kuwait University}
+\author{Rahul Yedida \and Adel Aladwani \and Snehanshu Saha}
 
-\date{}
-\begin{document}
+\institute{Rahul Yedida \at
+              Department of Computer Science and Engineering \\ PES University, Electronic City Campus \\
+              Tel.: +91 8066186610\\
+              \email{y.rahul@outlook.com}           %  \\
+%             \emph{Present address:} of F. Author  %  if needed
+           \and
+           Adel Aladwani \at
+              Department of Information Systems\\Kuwait University
+           \and
+           Snehanshu Saha \at
+              Department of Computer Science\\
+              PES University
+}
+
+\date{Received: date / Accepted: date}
 	\maketitle
-	
-	\abstract{
-		Scholars in academia regularly write papers showing the results of their work. To gauge how relevant their work is, several measures are used, including citation count and the h-index. This paper describes the methods used to identify ``prolific" authors, whose metrics are significantly higher than their peers, and provides a general discussion of the relationships between different metrics. We also discuss how this analysis is performed even with the high dimensionality of the dataset.
-	}
+
+\begin{abstract}
+Scholars in academia regularly write papers showing the results of their work. To gauge how relevant their work is, several measures are used, including citation count and the h-index. This paper describes the methods used to identify ``prolific" authors, whose metrics are significantly higher than their peers, and provides a general discussion of the relationships between different metrics. We also discuss how this analysis is performed even with the high dimensionality of the dataset.
+
+\keywords{scientometrics \and DBSCAN \and PCA \and Mean Shift}
+\end{abstract}
 	
 	\section{Introduction}
 	Scientometrics is the study of measuring science and research. Several measures are currently in use to measure the output of researchers, and each of these individually may not be an indicator of the quality and repute of a scholar's work. Comparing researchers by several metrics at once is cumbersome to do manually, and it would be incorrect to use a function of several metrics to compare how ``prolific" a researcher is. In this paper, we first identify linear relationships among the attributes. We assert that this is also useful in finding the ``most important" features. Later, we use two algorithms to cluster the records and compare the outputs of both algorithms. Finally, we use these results to identify prolific authors.
@@ -29,7 +41,7 @@
 	Our contributions are two-fold. First, we outline a systematic method to identify prolific authors based solely on data using two algorithms, and compare their results. Second, we illustrate an approach to choose an appropriate value of eps in DBSCAN by setting a threshold on the number of individual clusters formed.
 	
 	The rest of the paper is structured as follows. Section 2 describes the data and shows correlations between the attributes. Section 3 discusses the methods we used to analyse this data.
-	
+
 	\section{Data}
 	The data contains 618 records of scholars with 25 attributes. There are no missing values, and eight of the attributes are integers. For ease of analysis, we have labeled the attributes as \textit{v1} through \textit{v25}. A table explaining what each of these variables are is given in Table 1 of the Supplementary Materials section at the end of this paper.
 	
@@ -139,7 +151,10 @@
 	
 	For $S_1$, the value of \textit{eps} we arrived at was 45. Apart from 60 individual clusters, the algorithm identified three clusters of points. The results of this are summarized in Table 1. \\
 	
-	\begin{tabular}{|c|c|}
+	\begingroup
+	\captionof{table}{DBSCAN clustering results on $S_1$}
+	\endgroup
+	\begin{tabular}{ll}
 		\hline 
 		\textbf{Cluster} & \textbf{Number of points} \\ 
 		\hline 
@@ -152,14 +167,14 @@
 		2 & 6 \\ 
 		\hline 
 	\end{tabular}
-	\begingroup
-	\captionof{table}{DBSCAN clustering results on $S_1$}
-	\endgroup
 	\hfill\break
 	
 	The cluster -1 represents individual clusters. The rest of the clusters were arbitrarily numbered from zero. Next, we ran mean-shift clustering, which automatically finds clusters by estimating a \textit{bandwidth} parameter. Mean-Shift clustering identified 12 clusters, out of which five were individual clusters. We summarize these results in Table 2.\\
 	
-	\begin{tabular}{|c|c|}
+	\begingroup
+	\captionof{table}{Mean-Shift clustering results for $S_1$}
+	\endgroup
+	\begin{tabular}{ll}
 		\hline 
 		\textbf{Cluster} & \textbf{Number of points} \\ 
 		\hline 
@@ -180,9 +195,7 @@
 		6 & 2 \\ 
 		\hline 
 	\end{tabular}
-	\begingroup
-	\captionof{table}{Mean-Shift clustering results for $S_1$}
-	\endgroup
+	
 	\hfill\break
 	
 	We then checked whether the points in similar-sized clusters in each algorithm were the same. We briefly do this analysis for $S_1$, but conduct a more thorough investigation for $S_2$.
@@ -191,7 +204,10 @@
 	
 	Next, we performed the above analysis for $S_2$. The value of \textit{eps} we arrived at was 18.6, and DBSCAN identified three clusters apart from sixty individual clusters. A summary is provided in Table 3, again, with cluster -1 meaning individual clusters.\\
 	
-	\begin{tabular}{|c|c|}
+	\begingroup
+	\captionof{table}{DBSCAN clustering results for $S_2$}
+	\endgroup
+	\begin{tabular}{ll}
 		\hline 
 		\textbf{Cluster} & \textbf{Number of points} \\ 
 		\hline 
@@ -204,14 +220,12 @@
 		2 & 14 \\ 
 		\hline 
 	\end{tabular} 
-	\begingroup
-	\captionof{table}{DBSCAN clustering results for $S_2$}
-	\endgroup
+	
 	\hfill\break
 	
 	Table 4 summarizes the results of mean-shift clustering, which identified seven ``real" clusters and eight individual clusters.\\
 	
-	\begin{tabular}{|c|c|}
+	\begin{tabular}{ll}
 		\hline 
 		\textbf{Cluster} & \textbf{Number of points} \\ 
 		\hline 
@@ -246,7 +260,10 @@
 	
 	Clearly, looking at the first and third rows, there is a statistically significant difference between the means of the individual clusters and the first two largest clusters. In the third row, the 13/14 variables were statistically significant at 95\% confidence level, the insignificant one being \textit{v24} (star count). We also looked at the ``goodness" of the clustering using the Silhouette score \cite{rousseeuw1987silhouettes}, which was 0.571. \cite{kaufman2009finding} notes that this value means that ``a reasonable structure has been found".\\
 	
-	\begin{tabular}{|c|c|c|c|}
+	\begingroup
+	\captionof{table}{Fraction of significant Welch's test p-values at 95\% and 90\% confidence levels}
+	\endgroup
+	\begin{tabular}{llll}
 		\hline 
 		$C_1$ & $C_2$ & \textbf{95\%} & \textbf{90\%} \\ 
 		\hline 
@@ -263,9 +280,7 @@
 		1 & 2 & 0.643 & 0.786 \\ 
 		\hline 
 	\end{tabular} 
-	\begingroup
-	\captionof{table}{Fraction of significant Welch's test p-values at 95\% and 90\% confidence levels}
-	\endgroup
+	
 	\hfill\break
 	
 	\section{Conclusion}
